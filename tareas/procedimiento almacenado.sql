@@ -41,5 +41,78 @@ begin
     end if;
     end;
     
+    SELECT * 
+FROM mi_base_datos.financialsample;
+/*
+	Sentencia para agregar un campo.
+*/
+ALTER TABLE mi_base_datos.financialsample 
+ADD transactionID int primary key auto_increment;
+
+/*
+	Consultas
+
+    STR_TO_DATE()  / DATE_FORMAT()
+*/
+ 
+
+
+SELECT date , str_to_date(date, '%d/%m/%Y') fecha , 
+DATE_FORMAT(str_to_date(date, '%d/%m/%Y'), '%m') mes
+FROM mi_base-datos.financialsample
+where 
+	UPPER(Country) = 'CANADA'
+    AND Discounts > 0
+    AND TRIM(DiscountBand) = 'High'; 
+
+
+delete from mi_base_datos.currencies where currency_id = 2;
+
+INSERT INTO currencies (currency_name, currency_symbol, iso_code, exchange_rate, country)
+VALUES
+    ('Lempira', 'L', 'HNL', 24.9, 'HONDURAS');
+    
+/*
+select * from db_demo.currencies;
+update db_demo.currencies set exchange_rate = 20.48 where currency_id = 5;
+commit;
+*/
     
     
+    
+  DELIMITER //
+
+DROP PROCEDURE IF EXISTS sp_new_currency //
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS sp_new_currency //
+
+CREATE PROCEDURE sp_new_currency(
+    IN p_currency_name VARCHAR(45),
+    IN p_currency_symbol VARCHAR(45), 
+    IN p_exchange_rate DECIMAL(10,2), 
+    IN p_country VARCHAR(45),
+    IN p_iso_code VARCHAR(45)
+)
+BEGIN  
+    INSERT INTO currencies (
+        currency_name, currency_symbol, exchange_rate, country, ISO_CODE
+    )
+    VALUES (p_currency_name, p_currency_symbol, p_exchange_rate, p_country, p_iso_code);
+    
+    -- COMMIT solo si se requieren transacciones explícitas
+    COMMIT;  
+END //
+
+DELIMITER ;
+
+-- Llamar al procedimiento
+CALL sp_new_currency(
+    "YEN",
+    "¥", 
+    0, 
+    "JAPON",
+    "JPY"
+);
+
