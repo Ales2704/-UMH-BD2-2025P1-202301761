@@ -1,3 +1,6 @@
+
+/* actividad 7.1 */
+
 /*
 	Calculador de ahorro mensual. 
 */
